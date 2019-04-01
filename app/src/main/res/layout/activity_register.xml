@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="30dp"
+        >
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/company_sign_up_card"
+            style="@style/RippleStyleGrey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/company"
+                    android:padding="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sign up as a Company"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:background="@color/colorAccent"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        >
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/pharmacy_sign_up_card"
+            style="@style/RippleStyleGrey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/pharmacy"
+                    android:padding="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sign up as a Pharmacy"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:background="@color/colorAccent"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="30dp"
+        >
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            style="@style/RippleStyleWhite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/patient_signup_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:text="go as a patient"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
