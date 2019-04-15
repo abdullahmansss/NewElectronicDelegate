@@ -122,6 +122,8 @@ public class PatientMainActivity extends AppCompatActivity
             details = itemView.findViewById(R.id.details_btn);
         }
 
+        
+
         void BindPlaces(final MedicineModel medicineModel)
         {
             medicine_name.setText(medicineModel.getName());
