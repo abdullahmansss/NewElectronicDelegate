@@ -59,7 +59,6 @@ public class RequestsFragment extends Fragment
         recyclerView = view.findViewById(R.id.doctors_recyclerview);
         rotateLoading = view.findViewById(R.id.rotateloading);
 
-
         rotateLoading.start();
 
         firebaseDatabase = FirebaseDatabase.getInstance();

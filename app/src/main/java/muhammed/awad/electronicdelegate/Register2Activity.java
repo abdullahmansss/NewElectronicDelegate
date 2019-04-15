@@ -42,7 +42,7 @@ import muhammed.awad.electronicdelegate.PharmacyApp.PharmacyMainActivity;
 
 public class Register2Activity extends AppCompatActivity
 {
-    Button get_started,sign_in;
+    Button get_started,sign_in,patient_signin;
 
     PinView pinView;
     EditText mobile_field;
@@ -65,6 +65,7 @@ public class Register2Activity extends AppCompatActivity
 
         get_started = findViewById(R.id.getstarted_btn);
         sign_in = findViewById(R.id.signin_btn);
+        patient_signin = findViewById(R.id.patient_signin_btn);
 
         get_started.setOnClickListener(new View.OnClickListener()
         {
@@ -83,6 +84,16 @@ public class Register2Activity extends AppCompatActivity
                 OnVerificationStateChanged();
 
                 showMobileDialog();
+            }
+        });
+
+        patient_signin.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent= new Intent(getApplicationContext(), PatientSignInActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -24,15 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".PatientApp.PatientMainActivity">
-
-        </activity>
-        <activity android:name=".PharmacyApp.AddtoCartActivity">
-
-        </activity>
-        <activity android:name=".PharmacyApp.PharmacyMainActivity" >
-
-        </activity>
+        <activity android:name=".PatientApp.CheckActivity"></activity>
+        <activity android:name=".PatientSignInActivity" />
+        <activity android:name=".PatientApp.PatientMainActivity" />
+        <activity android:name=".PharmacyApp.AddtoCartActivity" />
+        <activity android:name=".PharmacyApp.PharmacyMainActivity" />
         <activity android:name=".PharmaceuticalActivity" />
         <activity android:name=".Register2Activity" />
         <activity android:name=".RegisterActivity" />
