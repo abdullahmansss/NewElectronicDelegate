@@ -1,16 +1,14 @@
-package muhammed.awad.electronicdelegate.PatientApp.Fragments;
+package muhammed.awad.electronicdelegate.PatientApp;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
@@ -22,16 +20,14 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import muhammed.awad.electronicdelegate.Models.CompanyModel;
 import muhammed.awad.electronicdelegate.Models.MedicineModel;
-import muhammed.awad.electronicdelegate.PatientApp.CheckActivity;
-import muhammed.awad.electronicdelegate.PatientApp.PatientMainActivity;
-import muhammed.awad.electronicdelegate.PatientApp.PharmacyStore;
+import muhammed.awad.electronicdelegate.PatientApp.Fragments.DrugsFragment;
+import muhammed.awad.electronicdelegate.PatientApp.Fragments.PharmaciesFragment;
 import muhammed.awad.electronicdelegate.R;
 
-public class PharmaciesFragment extends Fragment
+public class PharmacyStore extends AppCompatActivity
 {
-    View view;
+    String KEY;
 
     RecyclerView recyclerView;
 
@@ -39,54 +35,46 @@ public class PharmaciesFragment extends Fragment
     DatabaseReference databaseReference;
 
     LinearLayoutManager layoutManager;
-    FirebaseRecyclerAdapter<CompanyModel, pharmaceuticalViewholder> firebaseRecyclerAdapter;
-
-    public final static String PH_KEY = "pharm";
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
-        view = inflater.inflate(R.layout.patient_pharmacies_fragment, container, false);
-
-        return view;
-    }
+    FirebaseRecyclerAdapter<MedicineModel, pharmaceuticalViewholder> firebaseRecyclerAdapter;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
-        super.onActivityCreated(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pharmacy_store);
+
+        KEY = getIntent().getStringExtra(PharmaciesFragment.PH_KEY);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
-        recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerview);
 
-        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        DisplayallMedicines();
+        DisplayallMedicines(KEY);
     }
 
-    private void DisplayallMedicines()
+    private void DisplayallMedicines(String key)
     {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("AllUsers")
-                .child("Pharmacies")
+                .child("PharmaciesStores")
+                .child(key)
                 .limitToLast(50);
 
-        FirebaseRecyclerOptions<CompanyModel> options =
-                new FirebaseRecyclerOptions.Builder<CompanyModel>()
-                        .setQuery(query, CompanyModel.class)
+        FirebaseRecyclerOptions<MedicineModel> options =
+                new FirebaseRecyclerOptions.Builder<MedicineModel>()
+                        .setQuery(query, MedicineModel.class)
                         .build();
 
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<CompanyModel, pharmaceuticalViewholder>(options)
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<MedicineModel, pharmaceuticalViewholder>(options)
         {
             @Override
-            protected void onBindViewHolder(@NonNull pharmaceuticalViewholder holder, int position, @NonNull final CompanyModel model)
+            protected void onBindViewHolder(@NonNull pharmaceuticalViewholder holder, int position, @NonNull final MedicineModel model)
             {
                 final String key = getRef(position).getKey();
 
@@ -95,8 +83,7 @@ public class PharmaciesFragment extends Fragment
                     @Override
                     public void onClick(View v)
                     {
-                        Intent intent = new Intent(getContext(), PharmacyStore.class);
-                        intent.putExtra(PH_KEY, key);
+                        Intent intent = new Intent(getApplicationContext(), CheckActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -108,7 +95,7 @@ public class PharmaciesFragment extends Fragment
             @Override
             public pharmaceuticalViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
             {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.pharmacy_item, parent, false);
+                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.pharmaceutical_item, parent, false);
                 return new pharmaceuticalViewholder(view);
             }
         };
@@ -119,20 +106,29 @@ public class PharmaciesFragment extends Fragment
     public static class pharmaceuticalViewholder extends RecyclerView.ViewHolder
     {
         CircleImageView medicine_image;
-        TextView medicine_name;
+        TextView medicine_name,medicine_price;
         MaterialRippleLayout details;
 
         pharmaceuticalViewholder(View itemView)
         {
             super(itemView);
 
-            medicine_name = itemView.findViewById(R.id.pharm_name);
+            medicine_image = itemView.findViewById(R.id.medicine_image);
+            medicine_name = itemView.findViewById(R.id.medicine_name);
+            medicine_price = itemView.findViewById(R.id.medicine_price);
             details = itemView.findViewById(R.id.details_btn);
         }
 
-        void BindPlaces(final CompanyModel medicineModel)
+        void BindPlaces(final MedicineModel medicineModel)
         {
-            medicine_name.setText(medicineModel.getTitle());
+            medicine_name.setText(medicineModel.getName());
+            medicine_price.setText("Price : " + medicineModel.getPrice());
+
+            Picasso.get()
+                    .load(medicineModel.getImageurl())
+                    .placeholder(R.drawable.addphoto)
+                    .error(R.drawable.addphoto)
+                    .into(medicine_image);
         }
     }
 

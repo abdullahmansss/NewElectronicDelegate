@@ -131,14 +131,7 @@ public class PharmacyMainActivity extends AppCompatActivity
                             case R.id.nav_cart :
                                 Fragment cartFragment = new CartFragment();
                                 loadFragment(cartFragment);
-                                getSupportActionBar().setTitle("Cart");
-                                menuItem.setChecked(true);
-                                mDrawerLayout.closeDrawers();
-                                return true;
-                            case R.id.nav_feeds :
-                                Fragment newsFeedFragment = new NewsFeedFragment();
-                                loadFragment(newsFeedFragment);
-                                getSupportActionBar().setTitle("News Feed");
+                                getSupportActionBar().setTitle("My Store");
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;

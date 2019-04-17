@@ -28,6 +28,7 @@ import muhammed.awad.electronicdelegate.Fragments.NewsFragment;
 import muhammed.awad.electronicdelegate.Fragments.PharmaceuticalFragment;
 import muhammed.awad.electronicdelegate.Models.MedicineModel;
 import muhammed.awad.electronicdelegate.Models.PostModel;
+import muhammed.awad.electronicdelegate.PatientApp.CheckActivity;
 import muhammed.awad.electronicdelegate.PharmaceuticalActivity;
 import muhammed.awad.electronicdelegate.R;
 import muhammed.awad.electronicdelegate.Register2Activity;
@@ -75,7 +76,7 @@ public class DrugsFragment extends Fragment
     {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("Allpharmaceutical")
+                .child("AllPharmaciesMedicine")
                 .limitToLast(50);
 
         FirebaseRecyclerOptions<MedicineModel> options =
@@ -89,6 +90,16 @@ public class DrugsFragment extends Fragment
             protected void onBindViewHolder(@NonNull pharmaceuticalViewholder holder, int position, @NonNull final MedicineModel model)
             {
                 final String key = getRef(position).getKey();
+
+                holder.details.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(getContext(), CheckActivity.class);
+                        startActivity(intent);
+                    }
+                });
 
                 holder.BindPlaces(model);
             }

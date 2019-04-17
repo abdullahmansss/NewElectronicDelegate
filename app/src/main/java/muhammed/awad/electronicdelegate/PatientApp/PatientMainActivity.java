@@ -35,13 +35,9 @@ import muhammed.awad.electronicdelegate.R;
 
 public class PatientMainActivity extends AppCompatActivity
 {
-    RecyclerView recyclerView;
-
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-
-    LinearLayoutManager layoutManager;
-    FirebaseRecyclerAdapter<MedicineModel, pharmaceuticalViewholder> firebaseRecyclerAdapter;
+    FragmentPagerAdapter fragmentPagerAdapter;
+    ViewPager viewPager;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,114 +45,44 @@ public class PatientMainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_main);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tabs);
 
-        recyclerView = findViewById(R.id.recyclerview);
-
-        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
-
-        DisplayallMedicines();
-    }
-
-    private void DisplayallMedicines()
-    {
-        Query query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Allpharmaceutical")
-                .limitToLast(50);
-
-        FirebaseRecyclerOptions<MedicineModel> options =
-                new FirebaseRecyclerOptions.Builder<MedicineModel>()
-                        .setQuery(query, MedicineModel.class)
-                        .build();
-
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<MedicineModel, pharmaceuticalViewholder>(options)
+        fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
         {
-            @Override
-            protected void onBindViewHolder(@NonNull pharmaceuticalViewholder holder, int position, @NonNull final MedicineModel model)
-            {
-                final String key = getRef(position).getKey();
-
-                holder.details.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
+            private final Fragment[] mFragments = new Fragment[]
                     {
-                        Intent intent = new Intent(getApplicationContext(), CheckActivity.class);
-                        startActivity(intent);
-                    }
-                });
+                            new PharmaciesFragment(),
+                            new DrugsFragment()
+                    };
+            private final String[] mFragmentNames = new String[]
+                    {
+                            "PHARMACIES",
+                            "DRUGS",
+                    };
 
-                holder.BindPlaces(model);
+            @Override
+            public Fragment getItem(int position)
+            {
+                return mFragments[position];
             }
 
-            @NonNull
             @Override
-            public pharmaceuticalViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+            public int getCount()
             {
-                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.pharmaceutical_item, parent, false);
-                return new pharmaceuticalViewholder(view);
+                return mFragments.length;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position)
+            {
+                return mFragmentNames[position];
             }
         };
 
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
-    }
-
-    public static class pharmaceuticalViewholder extends RecyclerView.ViewHolder
-    {
-        CircleImageView medicine_image;
-        TextView medicine_name,medicine_price;
-        MaterialRippleLayout details;
-
-        pharmaceuticalViewholder(View itemView)
-        {
-            super(itemView);
-
-            medicine_image = itemView.findViewById(R.id.medicine_image);
-            medicine_name = itemView.findViewById(R.id.medicine_name);
-            medicine_price = itemView.findViewById(R.id.medicine_price);
-            details = itemView.findViewById(R.id.details_btn);
-        }
-
-        
-
-        void BindPlaces(final MedicineModel medicineModel)
-        {
-            medicine_name.setText(medicineModel.getName());
-            medicine_price.setText("Price : " + medicineModel.getPrice());
-
-            Picasso.get()
-                    .load(medicineModel.getImageurl())
-                    .placeholder(R.drawable.addphoto)
-                    .error(R.drawable.addphoto)
-                    .into(medicine_image);
-        }
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-
-        if (firebaseRecyclerAdapter != null)
-        {
-            firebaseRecyclerAdapter.startListening();
-        }
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-
-        if (firebaseRecyclerAdapter != null)
-        {
-            firebaseRecyclerAdapter.stopListening();
-        }
+        viewPager.setAdapter(fragmentPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private long exitTime = 0;
