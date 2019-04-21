@@ -72,6 +72,7 @@ public class NewsFeedFragment extends Fragment
                 new FirebaseRecyclerOptions.Builder<PostModel>()
                         .setQuery(query, PostModel.class)
                         .build();
+        
 
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<PostModel, PostsViewholder>(options)
         {
