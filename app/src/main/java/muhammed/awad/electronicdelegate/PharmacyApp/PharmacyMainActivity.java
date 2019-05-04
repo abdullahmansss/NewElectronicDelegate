@@ -135,6 +135,13 @@ public class PharmacyMainActivity extends AppCompatActivity
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
+                            case R.id.feeed :
+                                Fragment newsFeedFragment = new NewsFeedFragment();
+                                loadFragment(newsFeedFragment);
+                                getSupportActionBar().setTitle("News Feed");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
                         }
                         return true;
                     }

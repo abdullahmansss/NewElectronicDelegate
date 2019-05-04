@@ -75,7 +75,25 @@
         android:layout_marginLeft="16dp"
         android:textColor="@android:color/black"
         android:textStyle="bold"
+        android:layout_marginBottom="16dp"
         />
+
+        <TextView
+            android:id="@+id/customer_price_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:hint="Customer Price"
+            android:textSize="16sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            />
 
     <TextView
         android:id="@+id/pharmaceutical_info_field"

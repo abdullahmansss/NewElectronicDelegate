@@ -28,6 +28,7 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import muhammed.awad.electronicdelegate.Listner;
 import muhammed.awad.electronicdelegate.Models.MedicineModel;
 import muhammed.awad.electronicdelegate.PatientApp.Fragments.DrugsFragment;
 import muhammed.awad.electronicdelegate.PatientApp.Fragments.PharmaciesFragment;
@@ -38,6 +39,10 @@ public class PatientMainActivity extends AppCompatActivity
     FragmentPagerAdapter fragmentPagerAdapter;
     ViewPager viewPager;
     TabLayout tabLayout;
+
+    String g,d;
+
+    Listner listner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

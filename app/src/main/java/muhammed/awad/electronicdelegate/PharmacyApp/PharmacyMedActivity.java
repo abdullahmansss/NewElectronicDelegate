@@ -297,6 +297,7 @@ public class PharmacyMedActivity extends AppCompatActivity
 
         databaseReference.child("PharmaciesStores").child(getUID()).child(key).setValue(medicineModel);
         databaseReference.child("AllPharmaciesMedicine").child(key).setValue(medicineModel);
+        databaseReference.child("PhDrugsByName").child(name).child(key).setValue(medicineModel);
     }
 
     @Override

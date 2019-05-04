@@ -1,6 +1,9 @@
 package muhammed.awad.electronicdelegate.Fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,10 +12,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -26,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import muhammed.awad.electronicdelegate.MainActivity;
 import muhammed.awad.electronicdelegate.Models.MedicineModel;
 import muhammed.awad.electronicdelegate.PharmaceuticalActivity;
 import muhammed.awad.electronicdelegate.R;
@@ -105,18 +115,52 @@ public class PharmaceuticalFragment extends Fragment
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<MedicineModel, pharmaceuticalViewholder>(options)
         {
             @Override
-            protected void onBindViewHolder(@NonNull pharmaceuticalViewholder holder, int position, @NonNull final MedicineModel model)
+            protected void onBindViewHolder(@NonNull final pharmaceuticalViewholder holder, int position, @NonNull final MedicineModel model)
             {
                 rotateLoading.stop();
 
                 final String key = getRef(position).getKey();
 
-                holder.details.setOnClickListener(new View.OnClickListener() {
+                /*holder.details.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent= new Intent(getContext(), PharmaceuticalActivity.class);
                         intent.putExtra(EXTRA_EDIT_PHARMA, key);
                         startActivity(intent);
+                    }
+                });*/
+
+                holder.more_btn.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        PopupMenu popup = new PopupMenu(getContext(), holder.more_btn);
+                        //Inflating the Popup using xml file
+                        popup.getMenuInflater()
+                                .inflate(R.menu.more_menu, popup.getMenu());
+
+                        //registering popup with OnMenuItemClickListener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                        {
+                            public boolean onMenuItemClick(MenuItem item)
+                            {
+                                switch (item.getItemId())
+                                {
+                                    case R.id.edit:
+                                        Intent intent= new Intent(getContext(), PharmaceuticalActivity.class);
+                                        intent.putExtra(EXTRA_EDIT_PHARMA, key);
+                                        startActivity(intent);
+                                        return true;
+                                    case R.id.delete:
+                                        showDeleteDialog(key);
+                                        return true;
+                                    default:
+                                        return true;
+                                }
+                            }});
+
+                        popup.show(); //showing popup menu
                     }
                 });
 
@@ -139,8 +183,9 @@ public class PharmaceuticalFragment extends Fragment
     public static class pharmaceuticalViewholder extends RecyclerView.ViewHolder
     {
         CircleImageView medicine_image;
-        TextView medicine_name,medicine_price;
+        TextView medicine_name,medicine_price,phar_name;
         MaterialRippleLayout details;
+        ImageView more_btn;
 
         pharmaceuticalViewholder(View itemView)
         {
@@ -150,6 +195,10 @@ public class PharmaceuticalFragment extends Fragment
             medicine_name = itemView.findViewById(R.id.medicine_name);
             medicine_price = itemView.findViewById(R.id.medicine_price);
             details = itemView.findViewById(R.id.details_btn);
+            more_btn = itemView.findViewById(R.id.more_btn);
+            phar_name = itemView.findViewById(R.id.phar_name);
+
+            phar_name.setVisibility(View.GONE);
         }
 
         void BindPlaces(final MedicineModel medicineModel)
@@ -192,5 +241,55 @@ public class PharmaceuticalFragment extends Fragment
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
         return userId;
+    }
+
+    private void showDeleteDialog(final String key)
+    {
+        final Dialog dialog = new Dialog(getContext());
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.delete_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes();
+        dialog.setCancelable(false);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        Button yes_btn = dialog.findViewById(R.id.yes_btn);
+        Button cancel_btn = dialog.findViewById(R.id.cancel_btn);
+
+        yes_btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                delete(key);
+                dialog.dismiss();
+            }
+        });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    public void delete(String key)
+    {
+        databaseReference.child("pharmaceutical").child(getUID()).child(key).removeValue();
+        databaseReference.child("Allpharmaceutical").child(key).removeValue();
+
+        Toast.makeText(getContext(), "Deleted ..", Toast.LENGTH_SHORT).show();
+        /*Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);*/
     }
 }

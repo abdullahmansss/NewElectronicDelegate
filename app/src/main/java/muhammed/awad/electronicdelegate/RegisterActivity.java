@@ -977,6 +977,7 @@ public class RegisterActivity extends AppCompatActivity
                             uploadImages();
                             CompanyModel companyModel = new CompanyModel(all,email_Address,mobile,b,s,selected_district,selected_governorate,title);
                             databaseReference.child("AllUsers").child("Pharmacies").child(getUID()).setValue(companyModel);
+                            databaseReference.child("PharmaciesLocations").child(selected_governorate).child(selected_district).child(getUID()).setValue(companyModel);
 
                             Intent intent = new Intent(getApplicationContext(), PharmacyMainActivity.class);
                             startActivity(intent);

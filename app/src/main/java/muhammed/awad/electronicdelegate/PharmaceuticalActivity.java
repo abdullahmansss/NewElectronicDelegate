@@ -218,7 +218,7 @@ public class PharmaceuticalActivity extends AppCompatActivity
         } else
             {
                 add_pharmaceutical_btn.setText("edit");
-                delete_card.setVisibility(View.VISIBLE);
+                delete_card.setVisibility(View.GONE);
 
                 returndata(KEY);
 

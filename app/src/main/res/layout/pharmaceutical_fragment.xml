@@ -7,14 +7,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/doctors_recyclerview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/pharmaceutical_item"
+        android:orientation="vertical"
         >
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/doctors_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/pharmaceutical_item"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
 
     <com.victor.loading.rotate.RotateLoading
         android:id="@+id/rotateloading"

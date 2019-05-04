@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".PatientApp.PharmacyStore"></activity>
+        <activity android:name=".LocationActivity"></activity>
+        <activity android:name=".PatientApp.PharmacyStore" />
         <activity android:name=".PharmacyApp.PharmacyMedActivity" />
         <activity android:name=".PatientApp.CheckActivity" />
         <activity android:name=".PatientSignInActivity" />

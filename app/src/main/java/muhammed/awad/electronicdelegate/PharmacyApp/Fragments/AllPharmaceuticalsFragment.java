@@ -30,8 +30,7 @@ import muhammed.awad.electronicdelegate.PharmaceuticalActivity;
 import muhammed.awad.electronicdelegate.PharmacyApp.AddtoCartActivity;
 import muhammed.awad.electronicdelegate.R;
 
-public class AllPharmaceuticalsFragment extends Fragment
-{
+public class AllPharmaceuticalsFragment extends Fragment {
     View view;
 
     FirebaseDatabase firebaseDatabase;
@@ -47,8 +46,7 @@ public class AllPharmaceuticalsFragment extends Fragment
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.all_pharmaceuticals_fragment, container, false);
 
         return view;
@@ -75,8 +73,7 @@ public class AllPharmaceuticalsFragment extends Fragment
         DisplayallMedicines();
     }
 
-    private void DisplayallMedicines()
-    {
+    private void DisplayallMedicines() {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
                 .child("Allpharmaceutical")
@@ -126,7 +123,7 @@ public class AllPharmaceuticalsFragment extends Fragment
     public static class AllpharmaceuticalViewholder extends RecyclerView.ViewHolder
     {
         CircleImageView medicine_image;
-        TextView medicine_name,medicine_price,medicine_company;
+        TextView medicine_name, medicine_price, medicine_company;
         MaterialRippleLayout details;
 
         AllpharmaceuticalViewholder(View itemView)

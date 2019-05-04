@@ -33,7 +33,7 @@ public class AddtoCartActivity extends AppCompatActivity
     String KEY;
 
     CircleImageView pharmaceutical_image;
-    TextView pharmaceutical_name,pharmaceutical_price,pharmaceutical_info,quantity_txt,pharmaceutical_company_name_field;
+    TextView pharmaceutical_name,pharmaceutical_price,pharmaceutical_info,quantity_txt,pharmaceutical_company_name_field,customer_price_field;
     Button add_pharmaceutical_btn;
 
     String pharma_image,pharma_name,pharma_location,company_uid,order_name,pharma_price;
@@ -63,6 +63,7 @@ public class AddtoCartActivity extends AppCompatActivity
         pharmaceutical_image = findViewById(R.id.pharmaceutical_image);
         pharmaceutical_name = findViewById(R.id.pharmaceutical_name_field);
         pharmaceutical_price = findViewById(R.id.pharmaceutical_price_field);
+        customer_price_field = findViewById(R.id.customer_price_field);
         pharmaceutical_info = findViewById(R.id.pharmaceutical_info_field);
         pharmaceutical_company_name_field = findViewById(R.id.pharmaceutical_company_name_field);
         quantity_txt = findViewById(R.id.quantity_txt);
@@ -173,6 +174,7 @@ public class AddtoCartActivity extends AppCompatActivity
 
                         pharmaceutical_name.setText(medicineModel.getName());
                         pharmaceutical_price.setText(medicineModel.getPrice());
+                        customer_price_field.setText(medicineModel.getCustomer_price());
                         pharmaceutical_info.setText(medicineModel.getInfo());
                         pharmaceutical_company_name_field.setText("From : " + medicineModel.getCompany_name());
 

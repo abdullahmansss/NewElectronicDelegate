@@ -10,8 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -22,6 +26,7 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import muhammed.awad.electronicdelegate.Listner;
 import muhammed.awad.electronicdelegate.Models.CompanyModel;
 import muhammed.awad.electronicdelegate.Models.MedicineModel;
 import muhammed.awad.electronicdelegate.PatientApp.CheckActivity;
@@ -40,6 +45,11 @@ public class PharmaciesFragment extends Fragment
 
     LinearLayoutManager layoutManager;
     FirebaseRecyclerAdapter<CompanyModel, pharmaceuticalViewholder> firebaseRecyclerAdapter;
+
+    Spinner g,d;
+    Button done_btn;
+
+    String selected_governorate,selected_district;
 
     public final static String PH_KEY = "pharm";
 
@@ -67,15 +77,95 @@ public class PharmaciesFragment extends Fragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        DisplayallMedicines();
+        g = view.findViewById(R.id.governorate_spinner);
+        d  = view.findViewById(R.id.district_spinner);
+        done_btn = view.findViewById(R.id.done_btn);
+
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),
+                R.array.governorate, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        g.setAdapter(adapter1);
+
+        g.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                selected_governorate = String.valueOf(parent.getItemAtPosition(position));
+
+                if (selected_governorate.equals("Cairo"))
+                {
+                    ArrayAdapter<CharSequence> cairo_adapter = ArrayAdapter.createFromResource(getContext(),
+                            R.array.cairodistrict, android.R.layout.simple_spinner_item);
+                    // Specify the layout to use when the list of choices appears
+                    cairo_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    // Apply the adapter to the spinner
+                    d.setAdapter(cairo_adapter);
+                } else if (selected_governorate.equals("Giza"))
+                {
+                    ArrayAdapter<CharSequence> giza_adapter = ArrayAdapter.createFromResource(getContext(),
+                            R.array.gizadistrict, android.R.layout.simple_spinner_item);
+                    // Specify the layout to use when the list of choices appears
+                    giza_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    // Apply the adapter to the spinner
+                    d.setAdapter(giza_adapter);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+
+        d.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                selected_district = String.valueOf(parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
+
+        done_btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (selected_governorate.equals("Select governorate"))
+                {
+                    Toast.makeText(getContext(), "please enter governorate name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (selected_district.equals("Select district") || selected_district.length() == 0)
+                {
+                    Toast.makeText(getContext(), "please enter district name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                DisplayallMedicines(selected_governorate, selected_district);
+                firebaseRecyclerAdapter.startListening();
+            }
+        });
     }
 
-    private void DisplayallMedicines()
+    private void DisplayallMedicines(String g, String d)
     {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("AllUsers")
-                .child("Pharmacies")
+                .child("PharmaciesLocations")
+                .child(g)
+                .child(d)
                 .limitToLast(50);
 
         FirebaseRecyclerOptions<CompanyModel> options =
@@ -112,13 +202,11 @@ public class PharmaciesFragment extends Fragment
                 return new pharmaceuticalViewholder(view);
             }
         };
-
         recyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
     public static class pharmaceuticalViewholder extends RecyclerView.ViewHolder
     {
-        CircleImageView medicine_image;
         TextView medicine_name;
         MaterialRippleLayout details;
 
